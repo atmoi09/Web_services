@@ -1,0 +1,271 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the swagger documentation of the 02267 Software Development of Web Services course at DTU created by group 16. \n The group members are: \n \t- Gunn Mohr Hentze     \n \t- Josephine Eva Burgdorff Mellin     \n \t- Florian Kesten      \n \t- Bingkun Wu       \n \t- Bence Mány    \n \t- Tamas Janos Paulik",
+    "version": "1.0.0",
+    "title": "DTU Pay Group 16",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    }
+  },
+  "host": "fm-16.compute.dtu.dk:8080",
+  "basePath": "/dtuPayApi",
+  "tags": [
+    {
+      "name": "merchant",
+      "description": "Merchant API access points for registering, deletion and payment initialization."
+    },
+    {
+      "name": "customer",
+      "description": "Customer API access points for registering, deletion and token queries."
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/merchant/accounts": {
+      "post": {
+        "tags": [
+          "merchant"
+        ],
+        "summary": "Register merchant for DTU Pay.",
+        "description": "Register merchant for DTU Pay with First name, Last Name, CPR number and Bank account balance.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "JSON object",
+            "description": "Customer object that is needed to be registered for DTU Pay",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful acount creation"
+          },
+          "409": {
+            "description": "Account already exists"
+          }
+        }
+      }
+    },
+    "/merchant/payments/{merchantID}/payments": {
+      "post": {
+        "tags": [
+          "merchant"
+        ],
+        "summary": "Initiate a payment with DTU Pay.",
+        "description": "Initiate payment with DTU Pay.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "merchantID",
+            "in": "path",
+            "description": "ID of merchant",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "JSON object",
+            "description": "sssssss",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PaymentObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Succesful payment"
+          },
+          "400": {
+            "description": "Debtor account does not exist OR \n Token invalid"
+          }
+        }
+      }
+    },
+    "/merchant/accounts/{accountId}": {
+      "delete": {
+        "tags": [
+          "merchant"
+        ],
+        "summary": "Delete merchant from DTU Pay.",
+        "description": "Delete merchant from DTU Pay by the DTU Pay accountID.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "DTU Pay ID of the customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Succesful deletion"
+          }
+        }
+      }
+    },
+    "/customer/tokens/{customerId}/tokens": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of valid tokens regarding the 'customerID' Customer is provided",
+            "schema": {
+              "$ref": "#/definitions/TokenList"
+            }
+          }
+        }
+      }
+    },
+    "/customer/accounts": {
+      "post": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Register customer for DTU Pay.",
+        "description": "Register customer for DTU Pay with First name, Last Name, CPR number and Bank account balance.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "JSON object",
+            "description": "Customer object that is needed to be registered for DTU Pay",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "409": {
+            "description": "Account exists"
+          }
+        }
+      }
+    },
+    "/customer/accounts/{accountId}": {
+      "delete": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Delete customer from DTU Pay.",
+        "description": "Delete customer from DTU Pay by the DTU Pay accountID.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "DTU Pay ID of the customer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Succesful deletion"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "TokenList": {
+      "type": "object",
+      "properties": {
+        "tokenIdList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "maxItems": 6
+        }
+      }
+    },
+    "UserObject": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "cpr": {
+          "type": "string",
+          "example": "000000-1234"
+        },
+        "bankAccount": {
+          "type": "string",
+          "example": "10000"
+        }
+      }
+    },
+    "PaymentObject": {
+      "type": "object",
+      "properties": {
+        "merchantId": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "customerToken": {
+          "type": "string"
+        }
+      }
+    },
+    "AccountCreatedObject": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string"
+        },
+        "bankAccount": {
+          "type": "string"
+        },
+        "cpr": {
+          "type": "string",
+          "example": "123456-713"
+        }
+      }
+    }
+  }
+}

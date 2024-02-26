@@ -1,0 +1,1 @@
+call docker restart token-service account-service payment-service dtu-pay-service

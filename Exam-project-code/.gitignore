@@ -1,0 +1,15 @@
+/code-with-quarkus/target/
+/code-with-quarkus/.idea
+
+/messaging-utilities-3.2/
+
+/demo_client/target/
+/demo_client/.idea
+.idea/
+
+
+.DT_Store
+.DS_Store
+.gitlab-ci.yml
+
+*.bak

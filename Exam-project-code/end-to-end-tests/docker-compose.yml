@@ -1,0 +1,29 @@
+version: '3'
+services:
+  rabbitMq:
+    image: rabbitmq:3-management
+    container_name: rabbitMq_container
+    
+  dtu-pay-service:
+    image: dtu-pay-service
+    container_name: dtu-pay-service
+    ports:
+     - "8080:8080"
+    
+  account-service:
+    image: account-service 
+    container_name: account-service
+
+  payment-service:
+    image: payment-service
+    container_name: payment-service
+
+  token-service:
+    image: token-service
+    container_name: token-service
+
+  report-service:
+    image: report-service
+    container_name: report-service
+
+ 
